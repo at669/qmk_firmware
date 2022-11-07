@@ -5,6 +5,7 @@ enum sofle_layers {
     _QWERTYWIN = 0,
     _QWERTYMAC,
     _GAME,
+    _STENO,
     _LOWER,
     _RAISE,
     _ADJUST,
@@ -19,6 +20,7 @@ enum custom_keycodes {
     KC_WIN = SAFE_RANGE,
     KC_MAC,
     KC_GAME,
+    KC_STENO,
     KC_LOWER,
     KC_RAISE,
     KC_ADJUST,
@@ -83,6 +85,34 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_MPLY, KC_CAPS, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_MINS,
         //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
         KC_LCTRL, KC_LALT, KC_LGUI, MO(_LOWER), KC_SPC, KC_ENT, MO(_RAISE), KC_RCTRL, KC_RALT, KC_RGUI
+        //            \--------+--------+--------+---------+-------|   |--------+---------+--------+---------+-------/
+        ),
+    /*
+     * STENO
+     * ,-----------------------------------------.                    ,-----------------------------------------.
+     * | ESC  |   1  |   2  |   3  |   4  |   5  |                    |   6  |   7  |   8  |   9  |   0  |RShift|
+     * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
+     * | GRV  |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P  |  [   |
+     * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
+     * | TAB  |   A  |   S  |   D  |   F  |   G  |-------.    ,-------|   H  |   J  |   K  |   L  |   ;  |  '   |
+     * |------+------+------+------+------+------| MPLY  |    | Caps  |------+------+------+------+------+------|
+     * |LShift|   Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  |  -   |
+     * `-----------------------------------------/       /     \      \-----------------------------------------'
+     *            | Lower| LGUI | LALT |  C   | /   V   /       \  N   \  |  M   | RCTR | RALT | Raise  |
+     *            |      |      |      |      |/       /         \      \ |      |      |      |        |
+     *            `----------------------------------'           '------''---------------------------'
+     */
+    [_STENO] = LAYOUT(
+        //,------------------------------------------------.                    ,---------------------------------------------------.
+        KC_ESC, KC_1, KC_2, KC_3, KC_4, KC_5,                                     KC_6, KC_7, KC_8, KC_9, KC_0, RSFT_T(KC_ENT),
+        //|------+-------+--------+--------+--------+------|                   |--------+-------+--------+--------+--------+---------|
+        KC_GRV, KC_Q, KC_W, KC_E, KC_R, KC_T,                                     KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC,
+        //|------+-------+--------+--------+--------+------|                   |--------+-------+--------+--------+--------+---------|
+        KC_TAB, KC_A, KC_S, KC_D, KC_F, KC_G,                                     KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,
+        //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
+        KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_MPLY,                   KC_CAPS, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_MINS,
+        //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
+                      MO(_RAISE), KC_LALT, KC_LCTRL, KC_C, KC_V,          KC_N, KC_M, KC_RCTRL, KC_RALT, MO(_RAISE)
         //            \--------+--------+--------+---------+-------|   |--------+---------+--------+---------+-------/
         ),
     /*
@@ -186,7 +216,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
      * | DEBUG|      |      |      |      |      |                    |      |      |      |      |      | DEBUG|
      * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-     * |RGBTOG|bri up|hue up|sat up|spd up|      |-------.    ,-------| GAME |spd up|sat up|hue up|bri up|RGBTOG|
+     * |RGBTOG|bri up|hue up|sat up|spd up|STENO |-------.    ,-------| GAME |spd up|sat up|hue up|bri up|RGBTOG|
      * |------+------+------+------+------+------| trans |    | trans |------+------+------+------+------+------|
      * |RGBMOD|bri dn|hue dn|sat dn|spd dn| WIN  |-------|    |-------| MAC  |spd dn|sat dn|hue dn|bri dn|RGBMOD|
      * `-----------------------------------------/       /     \      \-----------------------------------------'
@@ -200,7 +230,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //|------+-------+--------+--------+--------+------|                   |--------+-------+--------+--------+--------+---------|
         DEBUG, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, DEBUG,
         //|------+-------+--------+--------+--------+------|                   |--------+-------+--------+--------+--------+---------|
-        RGB_TOG, RGB_VAI, RGB_HUI, RGB_SAI, RGB_SPI, KC_NO, KC_GAME, RGB_SPI, RGB_SAI, RGB_HUI, RGB_VAI, RGB_TOG,
+        RGB_TOG, RGB_VAI, RGB_HUI, RGB_SAI, RGB_SPI, KC_STENO,                   KC_GAME, RGB_SPI, RGB_SAI, RGB_HUI, RGB_VAI, RGB_TOG,
         //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
         RGB_MOD, RGB_VAD, RGB_HUD, RGB_SAD, RGB_SPD, KC_WIN, _______, _______, KC_MAC, RGB_SPD, RGB_SAD, RGB_HUD, RGB_VAD, RGB_MOD,
         //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
@@ -376,6 +406,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           set_single_persistent_default_layer(_QWERTYMAC);
         }
         return false;
+      case KC_STENO:
+          if (record->event.pressed) {
+              set_single_persistent_default_layer(_STENO);
+          }
       case KC_GAME:
           if (record->event.pressed) {
               set_single_persistent_default_layer(_GAME);
